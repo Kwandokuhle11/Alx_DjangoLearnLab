@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
-    <h2>Register</h2>
-    <form method="POST">
-        {% csrf_token %}  <!-- CSRF token to protect the form -->
-        {{ form.as_p }}   <!-- Renders the registration form fields (username, email, passwords) as paragraphs -->
-        <button type="submit">Register</button> <!-- Submit button for registration -->
-    </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p> <!-- Link to login page -->
-</body>
-</html>
+<h2>Register</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>
