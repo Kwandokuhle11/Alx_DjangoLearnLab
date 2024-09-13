@@ -22,6 +22,8 @@ class Post(models.Model):
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
+    tags = TaggableManager()  
+
 
     def __str__(self):
         return self.title
