@@ -42,3 +42,18 @@ class BookRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
 # BookRetrieveUpdateDeleteView: Handles retrieving, updating, and deleting a specific book.
 # Read-only access is allowed for unauthenticated users; only authenticated users can modify or delete the book.
+
+
+from rest_framework import generics
+from .models import Book
+from .serializers import BookSerializer # type: ignore
+from django_filters.rest_framework import DjangoFilterBackend # type: ignore
+from rest_framework.filters import OrderingFilter
+
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'author', 'publication_year']
+    search_fields = ['title', 'author']
+    ordering_fields = ['title', 'publication_year']  # Enable ordering by title and publication_year
