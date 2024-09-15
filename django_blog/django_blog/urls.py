@@ -45,5 +45,3 @@ urlpatterns = [
     path('search/', search_posts, name='search-posts'),
     path('tags/<slug:slug>/', PostListByTag.as_view(), name='posts-by-tag'), # type: ignore
 ]
-
-
