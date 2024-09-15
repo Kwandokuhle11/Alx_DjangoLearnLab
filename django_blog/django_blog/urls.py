@@ -34,6 +34,7 @@ urlpatterns = [
 
 from django.urls import path
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView # type: ignore
+from .views import search_posts
 
 urlpatterns = [
     path('', PostListView.as_view(), name='post-list'),
@@ -41,4 +42,8 @@ urlpatterns = [
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('post/<int:pk>/edit/', PostUpdateView.as_view(), name='post-update'),
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('search/', search_posts, name='search-posts'),
+    path('tags/<slug:slug>/', PostListByTag.as_view(), name='posts-by-tag'), # type: ignore
 ]
+
+

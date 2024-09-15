@@ -39,8 +39,6 @@ def profile(request):
         form = UserChangeForm(instance=request.user)
     return render(request, 'blog/profile.html', {'form': form})
 
-# blog/views.py
-
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -86,3 +84,30 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author  # Only allow the post's author to delete
+
+from django.db.models import Q
+from .models import Post
+from django.shortcuts import render
+
+def search_posts(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)  # Search by tags
+        ).distinct()
+    else:
+        posts = Post.objects.all()
+
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+from django.views.generic import ListView
+from taggit.models import Tag
+
+class PostListByTag(ListView):
+    model = Post
+    template_name = 'blog/post_list_by_tag.html'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs.get('slug')).distinct()
