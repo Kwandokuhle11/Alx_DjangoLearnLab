@@ -24,4 +24,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', CustomAuthToken.as_view(), name='login'),
     path('api/accounts/', include('accounts.urls')),
+    path('posts/', include('posts.urls')), 
+    path('accounts/', include('accounts.urls')),
 ]
