@@ -1,3 +1,4 @@
+from argparse import Action
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,20 +6,22 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+
+from accounts.models import CustomUser
 from .serializers import RegisterSerializer
 
-@api_view(['POST'])
-def register(request):
-    serializer = RegisterSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        token = Token.objects.create(user=user)
-        return Response({'token': token.key})
-    return Response(serializer.errors)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
-class CustomAuthToken(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        token = Token.objects.get(key=response.data['token'])
-        user = token.user
-        return Response({'token': token.key, 'user_id': user.pk, 'username': user.username})
+    @Action(detail=True, methods=['post'])
+    def follow(self, request, pk=None):
+        user = self.get_object()
+        request.user.follow(user)
+        return Response({'status': f'You are now following {user.username}'})
+
+    @Action(detail=True, methods=['post'])
+    def unfollow(self, request, pk=None):
+        user = self.get_object()
+        request.user.unfollow(user)
+        return Response({'status': f'You have unfollowed {user.username}'})
