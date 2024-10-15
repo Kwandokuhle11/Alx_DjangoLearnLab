@@ -22,3 +22,4 @@ if __name__ == '__main__':
     main()
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_models.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')

@@ -13,7 +13,7 @@ def post_list(request):
 @permission_required('app_name.can_create', raise_exception=True)
 def post_create(request):
     if request.method == 'POST':
-        # Handle post creation logic
+        
         pass
     return render(request, 'post_form.html')
 
@@ -21,7 +21,7 @@ def post_create(request):
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
-        # Handle post editing logic
+        
         pass
     return render(request, 'post_form.html', {'post': post})
 
