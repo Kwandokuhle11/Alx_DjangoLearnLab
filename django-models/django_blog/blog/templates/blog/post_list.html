@@ -1,0 +1,9 @@
+<h2>All Posts</h2>
+<ul>
+    {% for post in posts %}
+        <li>
+            <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+            <small>by {{ post.author }} on {{ post.created_at }}</small>
+        </li>
+    {% endfor %}
+</ul>
